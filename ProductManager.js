@@ -92,7 +92,7 @@ productManager.updateProduct(2, {
 
 console.log(productManager.getProducts());
 
-// Eliminar el tercer producto
-productManager.deleteProduct(3);
+// Eliminar producto
+productManager.deleteProduct(2);
 
 console.log(productManager.getProducts());
