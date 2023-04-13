@@ -1,8 +1,14 @@
 const express = require('express');
-const ProductManager = require('./ProductManager.js');
+const ProductManager = require('./src/ProductManager.js/index.js');
 
 const app = express();
 const productManager = new ProductManager('./products.json');
+
+const routes = require('./routes');
+
+app.use(express.json());
+app.use('/', routes);
+
 
 app.get('/products', async (req, res) => {
   const limit = parseInt(req.query.limit);
