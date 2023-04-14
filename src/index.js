@@ -1,5 +1,5 @@
 const ProductManager = require('./ProductManager');
-const pm = new ProductManager('products.json');
+const pm = new ProductManager('./products.json');
 
 const newProduct = {
   title: 'Producto nuevo',
