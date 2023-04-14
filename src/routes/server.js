@@ -23,18 +23,22 @@ productsRouter.get('/:pid', async (req, res) => {
   if (product) {
     res.json(product);
   } else {
-    res.status(404).send('Product not found');
+    res.status(404).send('Producto no encontrado');
   }
 });
 
 // Agregar un nuevo producto
 productsRouter.post('/', async (req, res) => {
   const product = req.body;
-  try {
-    await productManager.addProduct(product);
-    res.send('Product added successfully');
-  } catch (error) {
-    res.status(500).send('Error adding product');
+  if (!product.name || !product.price || !product.image) {
+    res.status(400).send('Los campos nombre, precio e imagen son obligatorios');
+  } else {
+    try {
+      await productManager.addProduct(product);
+      res.send('Producto agregado exitosamente');
+    } catch (error) {
+      res.status(500).send('Error al agregar el producto');
+    }
   }
 });
 
@@ -42,11 +46,21 @@ productsRouter.post('/', async (req, res) => {
 productsRouter.put('/:pid', async (req, res) => {
   const id = parseInt(req.params.pid);
   const updatedProduct = req.body;
-  try {
-    await productManager.updateProduct(id, updatedProduct);
-    res.send('Product updated successfully');
-  } catch (error) {
-    res.status(500).send('Error updating product');
+  if (Object.keys(updatedProduct).length === 0) {
+    // Si no se envió nada en el body, eliminar todos los campos del producto
+    try {
+      await productManager.deleteProductFields(id);
+      res.send('Producto actualizado exitosamente');
+    } catch (error) {
+      res.status(500).send('Error al actualizar el producto');
+    }
+  } else {
+    try {
+      await productManager.updateProduct(id, updatedProduct);
+      res.send('Producto actualizado exitosamente');
+    } catch (error) {
+      res.status(500).send('Error al actualizar el producto');
+    }
   }
 });
 
@@ -55,9 +69,9 @@ productsRouter.delete('/:pid', async (req, res) => {
   const id = parseInt(req.params.pid);
   try {
     await productManager.deleteProduct(id);
-    res.send('Product deleted successfully');
+    res.send('Producto eliminado exitosamente');
   } catch (error) {
-    res.status(500).send('Error deleting product');
+    res.status(500).send('Error al eliminar el producto');
   }
 });
 
@@ -69,4 +83,4 @@ app.use('/api/carts', cartsRouter);
 
 // Iniciar el servidor en el puerto 8080
 const PORT = 8080;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Servidor ejecutándose en el puerto ${PORT}`));
