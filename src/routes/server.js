@@ -1,11 +1,11 @@
 const express = require('express');
-const ProductManager = require('../ProductManager');
+const ProductManager = require('../manager/ProductManager');
 
 const app = express();
 app.use(express.json());
 
 // Crear un nuevo ProductManager y especificar la ruta al archivo JSON
-const productManager = new ProductManager('./products.json');
+const productManager = new ProductManager('../json/products.json');
 
 // Rutas para manejo de productos
 const productsRouter = express.Router();

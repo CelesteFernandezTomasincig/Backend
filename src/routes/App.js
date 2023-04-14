@@ -1,8 +1,8 @@
 const express = require('express');
-const ProductManager = require('./src/ProductManager.js/index.js');
+const ProductManager = require('../manager/ProductManager');
 
 const app = express();
-const productManager = new ProductManager('./products.json');
+const productManager = new ProductManager('../json/product.json');
 
 const routes = require('./routes');
 
